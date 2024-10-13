@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text   -->
+    <string name="btn_re_search">다시 검색하기</string>
+
+    <!-- Toast message  -->
+    <string name="msg_save_data_error">"좋아요 저장중 문제 발생"</string>
+    <string name="msg_delete_data_error">"좋아요 삭제중 문제 발생"</string>
+    <string name="msg_delete_data_success">좋아요 취소 성공</string>
+    <string name="msg_save_data_success">좋아요 성공</string>
+    <string name="msg_load_data_error">검색 데이터가 없습니다.</string>
+
+
+    <!--  contentDescription  -->
+    <string name="content_description_thumbnail">thumbnail</string>
+    <string name="content_description_search">search</string>
+    <string name="content_description_delete">delete</string>
+</resources>
