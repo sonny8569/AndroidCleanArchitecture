@@ -15,6 +15,7 @@ class DeviceController @Inject constructor(private val device: SharedDataSource)
     }
 
     override suspend fun getData(): String? {
+        val data = mutableListOf<Pair<Int , Boolean>>()
         return device.getData()
     }
 }

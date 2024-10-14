@@ -1,6 +1,5 @@
 package com.example.domain.useCase
 
-import android.app.DownloadManager.Query
 import android.util.Log
 import com.example.data.dataSoruce.DeviceDataSource
 import com.example.data.dataSoruce.NetworkDataSource
@@ -10,11 +9,11 @@ import com.example.domain.model.SearchResult
 import com.example.domain.utill.DocumentConverter
 import javax.inject.Inject
 
-class SearchApiUseCase @Inject constructor(
+class SearchApi @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val deviceDataSource: DeviceDataSource,
 ) :
-    UseCase<SearchApiUseCase.PARAM, SearchApiUseCase.Result> {
+    UseCase<SearchApi.PARAM, SearchApi.Result> {
     private val sort = "recency"
     private val pageSize = 10
 
@@ -90,11 +89,11 @@ class SearchApiUseCase @Inject constructor(
 
     private fun makeLikeData(
         data: List<SearchResult>,
-        likeData: List<SearchResult>,
+        likeData: List<SaveLikeData.SaveData>,
     ): List<SearchResult> {
-        val likeDataSet = likeData.toHashSet()
+        val likeDataSet: Set<String> = likeData.map { it.id }.toHashSet()
         data.forEach { document ->
-            if (likeDataSet.contains(document)) {
+            if (likeDataSet.contains(document.id)) {
                 document.isLike = true
             }
         }

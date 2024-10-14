@@ -37,7 +37,7 @@ internal class SearchBar @JvmOverloads constructor(
         }
         binding.editSearchContent.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                onSearchListener?.onSearch(v.text.toString())
+                onSearchListener?.onSearch(v.text.toString().trim())
                 hideKeyboard()
                 v.clearFocus()
                 return@setOnEditorActionListener true

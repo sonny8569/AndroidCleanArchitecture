@@ -3,11 +3,11 @@ package com.example.search.widget.soruce
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.domain.model.SearchResult
-import com.example.domain.useCase.SearchApiUseCase
+import com.example.domain.useCase.SearchApi
 
 internal class SearchPagingSource(
     private val query: String,
-    private val search: SearchApiUseCase,
+    private val search: SearchApi,
 ) : PagingSource<SearchPagingSource.Param, SearchResult>() {
 
 
@@ -31,7 +31,7 @@ internal class SearchPagingSource(
         return try {
             val param = params.key ?: Param()
             val response = search.invoke(
-                SearchApiUseCase.PARAM(
+                SearchApi.PARAM(
                     query,
                     param.page,
                     param.isImageEnd,
@@ -39,14 +39,14 @@ internal class SearchPagingSource(
                 )
             )
             when (response) {
-                is SearchApiUseCase.Result.Success -> mapResponse(
+                is SearchApi.Result.Success -> mapResponse(
                     param,
                     response.data,
                     response.isImageEnd,
                     response.isVideoEnd
                 )
 
-                is SearchApiUseCase.Result.Fail -> LoadResult.Error(Exception("No Response"))
+                is SearchApi.Result.Fail -> LoadResult.Error(Exception("No Response"))
             }
         } catch (e: Exception) {
             LoadResult.Error(e)

@@ -9,4 +9,18 @@ data class SearchResult(
     val type: String,
     var isLike: Boolean = false,
     val id: String,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is SearchResult) return false
+        return id == other.thumbNail
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+    override fun toString(): String {
+        return "SearchResult(title='$title', url='$url', thumbNail='$thumbNail', dateTime='$dateTime', collection='$collection', type='$type', isLike=$isLike, id='$id')"
+    }
+}

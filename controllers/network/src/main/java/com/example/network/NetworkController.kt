@@ -44,7 +44,7 @@ class NetworkController @Inject constructor(private val api: SearchApi) : Networ
             dateTime = this.datetime,
             collection = this.collection,
             type = "image",
-            id = this.url
+            id = this.thumbnailUrl
         )
     }
 
@@ -57,7 +57,7 @@ class NetworkController @Inject constructor(private val api: SearchApi) : Networ
             dateTime = this.datetime,
             collection = this.collection,
             type = "video",
-            id = this.url
+            id = this.thumbnailUrl
         )
     }
 }
