@@ -17,7 +17,7 @@ class SearchViewModel @Inject constructor(private val search: SearchApiUseCase) 
 
     fun onSearch(query: String) {
         viewModelScope.launch {
-            when (val result = search.invoke(SearchApiUseCase.PARAM(query))) {
+            when (val result = search.invoke(SearchApiUseCase.PARAM(query , 1))) {
                 is SearchApiUseCase.Result.Success -> {
                     _liveData.postValue(Action.Search(result.data))
                 }
