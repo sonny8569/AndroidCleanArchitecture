@@ -77,6 +77,11 @@ class LikeFragment : Fragment() {
 
             }
         }
+
+        viewModel.currentData.observe(viewLifecycleOwner){ item ->
+            adapter.submitList(item.likeData)
+        }
+
     }
 
 

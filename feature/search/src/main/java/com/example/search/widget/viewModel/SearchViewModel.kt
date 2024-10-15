@@ -64,8 +64,14 @@ class SearchViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            val data = getData.invoke(GetDeviceChangeData.PARAM(list))
-            _liveData.postValue(Action.GetDeviceData(data.changeData))
+            when(val result = getData.invoke(GetDeviceChangeData.PARAM(list))){
+                is GetDeviceChangeData.Result.Success ->{
+                    _liveData.postValue(Action.GetDeviceData(result.changeData))
+                }
+                is GetDeviceChangeData.Result.Fail ->{
+                    _liveData.postValue(Action.Error(result.message))
+                }
+            }
         }
     }
 

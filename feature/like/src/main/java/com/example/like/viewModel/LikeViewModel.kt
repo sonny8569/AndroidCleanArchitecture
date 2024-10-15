@@ -29,10 +29,10 @@ class LikeViewModel @Inject constructor(
             val currentList = _currentData.value?.likeData?.map { it } ?: emptyList()
             when(val result = getDeviceData.invoke(GetDeviceData.PARMA(currentList))){
                 is GetDeviceData.Result.Success ->{
-
+                    _currentData.postValue(LikeData(result.data))
                 }
                 is GetDeviceData.Result.Fail ->{
-
+                    _liveData.postValue(Action.Error(result.message))
                 }
             }
         }

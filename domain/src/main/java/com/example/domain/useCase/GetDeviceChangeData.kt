@@ -1,16 +1,29 @@
 package com.example.domain.useCase
 
 import com.example.data.dataSoruce.DeviceDataSource
+import com.example.domain.UseCase
 import com.example.domain.model.SearchResult
 import com.example.domain.utill.DocumentConverter
 import javax.inject.Inject
 
-class GetDeviceChangeData @Inject constructor(private val deviceDataSource: DeviceDataSource) {
+class GetDeviceChangeData @Inject constructor(private val deviceDataSource: DeviceDataSource) :
+    UseCase<GetDeviceChangeData.PARAM, GetDeviceChangeData.Result> {
+    data class PARAM(
+        val data: List<SearchResult>,
+    ) : UseCase.Param
 
-    suspend fun invoke(param: PARAM): Result {
+    sealed interface Result : UseCase.Result {
+        data class Success(val changeData: List<Pair<Int, Boolean>>) : Result
+        data class Fail(val message: String) : Result
+    }
+
+    override suspend fun invoke(param: PARAM): Result {
         val deviceDataStr = deviceDataSource.getData()
         val device = deviceDataStr?.strToSearchResult() ?: emptyList<SearchResult>()
-        return Result(device.checkChangeLike(param.data))
+        if (device.isEmpty()) {
+            return Result.Fail("save Data is Null")
+        }
+        return Result.Success(device.checkChangeLike(param.data))
     }
 
     private fun String.strToSearchResult(): List<SearchResult> {
@@ -29,15 +42,7 @@ class GetDeviceChangeData @Inject constructor(private val deviceDataSource: Devi
                 }
             }
         }
-
         return changedIndexes
     }
 
-    data class PARAM(
-        val data: List<SearchResult>,
-    )
-
-    data class Result(
-        val changeData: List<Pair<Int, Boolean>>,
-    )
 }

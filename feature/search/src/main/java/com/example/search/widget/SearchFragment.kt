@@ -22,6 +22,7 @@ import com.example.search.databinding.FragmentSearchBinding
 import com.example.search.widget.utill.Delete_Data_Error
 import com.example.search.widget.utill.Load_Error
 import com.example.search.widget.utill.Save_Data_Error
+import com.example.search.widget.utill.Save_Data_Null
 import com.example.search.widget.viewModel.SearchViewModel
 import com.example.search.widget.widget.SearchAdapter
 import com.example.search.widget.widget.SearchBar
@@ -105,6 +106,9 @@ class SearchFragment : Fragment() {
                         Delete_Data_Error -> {
                             showToastMessage(requireContext().getText(R.string.msg_delete_data_error))
                         }
+                        Save_Data_Null ->{
+                            changeIsLikeFalse()
+                        }
                     }
                 }
 
@@ -126,6 +130,16 @@ class SearchFragment : Fragment() {
         list.forEachIndexed { index, item ->
             if (item.id == changedItems.id) {
                 item.isLike = changedItems.isLike
+                adapter.notifyItemChanged(index)
+            }
+        }
+    }
+
+    private fun changeIsLikeFalse(){
+        val list = adapter.snapshot().items
+        list.forEachIndexed{ index , item ->
+            if(item.isLike){
+                item.isLike = false
                 adapter.notifyItemChanged(index)
             }
         }
