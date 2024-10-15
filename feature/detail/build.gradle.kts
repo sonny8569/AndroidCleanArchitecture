@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
 }
 
@@ -60,4 +61,8 @@ dependencies {
 
     //image Glide
     implementation(libs.github.bumptech)
+    implementation(project(":domain"))
+
+    implementation(libs.jetbrains.kotlinx.serialization.json)
+
 }

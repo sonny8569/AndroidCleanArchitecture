@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.domain.model.Router
 import com.example.domain.model.SearchResult
 import com.example.search.R
 import com.example.search.databinding.FragmentSearchBinding
@@ -29,12 +30,16 @@ import com.example.search.widget.widget.SearchBar
 import com.example.search.widget.widget.SearchFeedItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
-    private val adapter by lazy { SearchAdapter(Glide.with(this), viewModel::onChangeLike) }
+    private val adapter by lazy { SearchAdapter(Glide.with(this), viewModel::onChangeLike , viewModel::onDetailClick) }
+
+    @Inject
+    lateinit var router : Router
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -112,6 +117,7 @@ class SearchFragment : Fragment() {
                     }
                 }
 
+                is SearchViewModel.Action.ShowDetail -> router.navigateToDetail(action.data , action.data.isLike)
             }
         }
 

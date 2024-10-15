@@ -59,6 +59,10 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun onDetailClick(item : SearchResult){
+        _liveData.value = Action.ShowDetail(item)
+    }
+
     fun onCheckDataChange(list: List<SearchResult>) {
         if(list.isEmpty()){
             return
@@ -85,6 +89,7 @@ class SearchViewModel @Inject constructor(
     sealed interface Action {
         data class SaveResult(val data: SearchResult) : Action
         data class GetDeviceData(val data: List<Pair<Int, Boolean>>) : Action
+        data class ShowDetail(val data : SearchResult) : Action
         data class Error(val message: String) : Action
     }
 }

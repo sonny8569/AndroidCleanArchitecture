@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     id("kotlin-kapt")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -49,4 +50,5 @@ dependencies {
     kapt(libs.compoler.hilt)
     implementation(project(":data"))
     implementation(libs.gson)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
 }

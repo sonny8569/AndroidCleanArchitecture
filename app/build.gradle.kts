@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
 }
 
@@ -57,7 +58,7 @@ dependencies {
     //hilt
     implementation(libs.dagger.hilt)
     kapt(libs.compoler.hilt)
-
+    implementation(libs.jetbrains.kotlinx.serialization.json)
 //    implementation(project(":feature"))
     implementation(project(":feature:like"))
     implementation(project(":feature:search"))

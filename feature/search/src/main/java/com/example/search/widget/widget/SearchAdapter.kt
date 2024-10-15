@@ -23,6 +23,7 @@ import com.example.search.widget.utill.Type_video
 class SearchAdapter(
     private val requestManger: RequestManager,
     private val onClickFavoriteItem: (SearchResult) -> Unit,
+    private val onItemClick : (SearchResult) -> Unit
 ) : PagingDataAdapter<SearchResult, RecyclerView.ViewHolder>(diffCallback) {
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<SearchResult>() {
@@ -37,6 +38,7 @@ class SearchAdapter(
         private val binding: AdapterSearchFeedBinding,
         private val requestManger: RequestManager,
         private val onClickFavoriteItem: (SearchResult) -> Unit,
+        private val onItemClick: (SearchResult) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SearchResult) {
             with(binding) {
@@ -51,6 +53,9 @@ class SearchAdapter(
                     item.isLike = !item.isLike
                     setFavoriteImage(item)
                     onClickFavoriteItem(item)
+                }
+                root.setOnClickListener {
+                    onItemClick(item)
                 }
             }
         }
@@ -104,7 +109,8 @@ class SearchAdapter(
         return FeedViewHolder(
             AdapterSearchFeedBinding.inflate(inflater , parent , false),
             requestManger,
-            onClickFavoriteItem
+            onClickFavoriteItem,
+            onItemClick
         )
     }
 }
