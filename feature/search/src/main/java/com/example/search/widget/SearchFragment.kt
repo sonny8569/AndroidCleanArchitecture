@@ -1,6 +1,5 @@
 package com.example.search.widget
 
-import android.media.RouteListingPreference.Item
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -88,6 +87,10 @@ class SearchFragment : Fragment() {
                     ).show()
                 }
 
+                is SearchViewModel.Action.GetDeviceData -> {
+                    action.data.toChangeData()
+                }
+
                 is SearchViewModel.Action.Error -> {
                     when (action.message) {
                         Load_Error -> {
@@ -104,18 +107,20 @@ class SearchFragment : Fragment() {
                         }
                     }
                 }
+
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.items.collect{ pagingData ->
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.items.collect { pagingData ->
                     adapter.submitData(pagingData)
                     binding.list.scrollToPosition(0)
                 }
             }
         }
     }
+
     private fun handleRefreshChangedItems(changedItems: SearchResult) {
         val list = adapter.snapshot().items
         list.forEachIndexed { index, item ->
@@ -126,6 +131,14 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun List<Pair<Int, Boolean>>.toChangeData() {
+        val data = adapter.snapshot()
+        this.forEach { (index, isLike) ->
+            (data[index] as? SearchResult)?.isLike = isLike
+            adapter.notifyItemChanged(index)
+        }
+    }
+
     private fun showToastMessage(message: CharSequence) {
         Toast.makeText(
             requireContext(),
@@ -133,6 +146,7 @@ class SearchFragment : Fragment() {
             Toast.LENGTH_SHORT
         ).show()
     }
+
     private fun showErrorView(isVisible: Boolean) {
         binding.btnReSearch.isVisible = isVisible
         showToastMessage(requireContext().getText(R.string.msg_load_data_error))
@@ -153,6 +167,10 @@ class SearchFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.onCheckDataChange(adapter.snapshot().items)
+    }
 
     companion object {
         fun newInstance() = SearchFragment()

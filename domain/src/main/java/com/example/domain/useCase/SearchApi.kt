@@ -89,7 +89,7 @@ class SearchApi @Inject constructor(
 
     private fun makeLikeData(
         data: List<SearchResult>,
-        likeData: List<SaveLikeData.SaveData>,
+        likeData: List<SearchResult>,
     ): List<SearchResult> {
         val likeDataSet: Set<String> = likeData.map { it.id }.toHashSet()
         data.forEach { document ->

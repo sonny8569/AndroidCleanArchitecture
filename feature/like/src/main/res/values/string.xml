@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_delete_data_error">"좋아요 삭제중 문제 발생"</string>
+    <string name="msg_data_null">저장한 데이터가 없습니다</string>
+    <string name="content_description_thumbnail">thumbnail</string>
+    <string name="msg_save_data_success">좋아요 설정 성공</string>
+</resources>

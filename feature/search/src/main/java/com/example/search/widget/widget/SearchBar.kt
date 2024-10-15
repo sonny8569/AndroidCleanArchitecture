@@ -17,7 +17,7 @@ internal class SearchBar @JvmOverloads constructor(
 
     private val binding: ItemEdittextSearchBinding
     private var onSearchListener: OnSearchListener? = null
-
+    private var onDataClearListener : OnDataClearListener?= null
     init {
         val inflater = LayoutInflater.from(context)
         binding = ItemEdittextSearchBinding.inflate(inflater, this, true)
@@ -28,12 +28,15 @@ internal class SearchBar @JvmOverloads constructor(
         binding.editSearchContent.addTextChangedListener {
             if (it?.isNotEmpty() == true) {
                 binding.imgDeleteIcon.visibility = VISIBLE
+                binding.imgSearchIcon.visibility = GONE
             } else {
                 binding.imgDeleteIcon.visibility = GONE
+                binding.imgSearchIcon.visibility = VISIBLE
             }
         }
         binding.imgDeleteIcon.setOnClickListener {
             binding.editSearchContent.text.clear()
+            onDataClearListener?.onDataClear()
         }
         binding.editSearchContent.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -60,6 +63,10 @@ internal class SearchBar @JvmOverloads constructor(
         onSearchListener = listener
     }
 
+    fun setOnDataClearListener(listener : OnDataClearListener){
+        onDataClearListener = listener
+    }
+
     private fun showKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(binding.editSearchContent, 0)
@@ -72,6 +79,10 @@ internal class SearchBar @JvmOverloads constructor(
 
     interface OnSearchListener {
         fun onSearch(query: String)
+    }
+
+    interface OnDataClearListener{
+        fun onDataClear()
     }
 
 }

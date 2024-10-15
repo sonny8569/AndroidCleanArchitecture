@@ -8,12 +8,12 @@ import com.google.gson.reflect.TypeToken
 object DocumentConverter {
     private val gson = Gson()
 
-    fun toJson(saveData: List<SaveLikeData.SaveData>): String {
+    fun toJson(saveData: List<SearchResult>): String {
         return gson.toJson(saveData)
     }
 
-    fun fromJson(json: String): List<SaveLikeData.SaveData> {
-        val type = object : TypeToken<List<SaveLikeData.SaveData>>() {}.type
+    fun fromJson(json: String): List<SearchResult> {
+        val type = object : TypeToken<List<SearchResult>>() {}.type
         return gson.fromJson(json, type)
     }
 }
