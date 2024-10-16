@@ -28,6 +28,7 @@ import com.example.search.widget.viewModel.SearchViewModel
 import com.example.search.widget.widget.SearchAdapter
 import com.example.search.widget.widget.SearchBar
 import com.example.search.widget.widget.SearchFeedItemDecoration
+import com.example.search.widget.widget.SearchListPagingStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,14 +61,24 @@ class SearchFragment : Fragment() {
         binding.list.layoutManager = LinearLayoutManager(context)
         binding.list.addItemDecoration(SearchFeedItemDecoration())
         adapter.addLoadStateListener {
+            if(it.refresh is LoadState.Error){
+                Log.d("test", it.hasError.toString())
+            }
             showProgress(it.refresh is LoadState.Loading)
-//            showErrorView(it.refresh is LoadState.Error)
+            showErrorView(it.refresh is LoadState.Error)
             showEmptyView(it.append.endOfPaginationReached && adapter.itemCount == 0)
         }
+        binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
+            SearchListPagingStateAdapter{ clickRetry() },
+            SearchListPagingStateAdapter{clickRetry()}
+        )
+        binding.btnReSearch.setOnClickListener { clickRetry() }
         binding.list.adapter = adapter
         binding.widgetSearchBar.requestFocusInput()
     }
-
+    private fun clickRetry() {
+        adapter.retry()
+    }
     private fun addListener() {
         binding.widgetSearchBar.setOnSearchListener(object : SearchBar.OnSearchListener {
             override fun onSearch(query: String) {

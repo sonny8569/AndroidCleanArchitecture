@@ -47,7 +47,7 @@ class SearchApi @Inject constructor(
             emptyList<SearchResult>() to false
         }
         val feeds = (imageData + videoData).sortedByDescending { it.dateTime }
-        if (feeds.isEmpty() && !isImageEnd && !isVideoEnd) {
+        if (feeds.isEmpty() && isImageEnd && isVideoEnd) {
             return Result.Fail("Load Error")
         }
         val likeDataStr = deviceDataSource.getData()
@@ -68,7 +68,6 @@ class SearchApi @Inject constructor(
             val documents = response.map { it.toSearchResult() }
             Pair(documents, isEnd)
         } catch (e: Exception) {
-            Log.e("SearchApiUseCase", "Error loading images", e)
             Pair(emptyList(), false)
         }
     }
@@ -82,7 +81,6 @@ class SearchApi @Inject constructor(
             val documents = response.map { it.toSearchResult() }
             Pair(documents, isEnd)
         } catch (e: Exception) {
-            Log.e("SearchApiUseCase", "Error loading images", e)
             Pair(emptyList(), false)
         }
     }

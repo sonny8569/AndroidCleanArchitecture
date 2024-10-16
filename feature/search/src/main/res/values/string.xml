@@ -9,7 +9,9 @@
     <string name="msg_delete_data_success">좋아요 취소 성공</string>
     <string name="msg_save_data_success">좋아요 성공</string>
     <string name="msg_load_data_error">검색 데이터가 없습니다.</string>
-
+    <string name="retry">다시시도</string>
+    <string name="message_retry">문제가 발생했습니다. 다시 시도해주세요.</string>
+    <string name="message_no_search_result">검색 결과가 없습니다.</string>
 
     <!--  contentDescription  -->
     <string name="content_description_thumbnail">thumbnail</string>
