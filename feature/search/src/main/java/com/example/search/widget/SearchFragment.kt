@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
         binding.list.addItemDecoration(SearchFeedItemDecoration())
         adapter.addLoadStateListener {
             showProgress(it.refresh is LoadState.Loading)
-            showErrorView(it.refresh is LoadState.Error)
+//            showErrorView(it.refresh is LoadState.Error)
             showEmptyView(it.append.endOfPaginationReached && adapter.itemCount == 0)
         }
         binding.list.adapter = adapter
