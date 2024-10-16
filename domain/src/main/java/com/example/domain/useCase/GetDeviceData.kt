@@ -21,14 +21,6 @@ class GetDeviceData @Inject constructor(private val deviceDataSource: DeviceData
             return Result.Fail("No data")
         }
         val data = DocumentConverter.fromJson(deviceStr)
-        if (param.currentData.isEmpty()) {
-            return Result.Success(data)
-        }
-        return Result.Success(param.currentData.changeData(data))
-    }
-
-    private fun List<SearchResult>.changeData(deviceData: List<SearchResult>): List<SearchResult> {
-        val deviceDataIds = deviceData.map { it.id }.toSet()
-        return this.filter { it.id in deviceDataIds }
+        return Result.Success(data)
     }
 }
