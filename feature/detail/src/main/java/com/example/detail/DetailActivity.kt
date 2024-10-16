@@ -36,6 +36,7 @@ class DetailActivity : AppCompatActivity() {
     }
     private fun setData(data : DetailViewModel.Action){
         setImage(data.data.thumbNail)
+        setMenuIcon(data.isLike)
     }
     private fun setImage(url : String){
         Glide.with(this)

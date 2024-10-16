@@ -31,17 +31,19 @@ class DetailViewModel @Inject constructor(
     val livedata: LiveData<Action> get() = _liveData
 
     init {
-        _liveData.value = Action(searchData , isLike)
+        _liveData.value = Action(searchData, isLike)
     }
-    fun onLikeChange(){
+
+    fun onLikeChange() {
         val currentData = _liveData.value ?: return
-        val changed = currentData.copy(data = currentData.data)
+        val changed = currentData.copy(isLike = !currentData.isLike)
         _liveData.value = changed
         viewModelScope.launch {
-            save.invoke(SaveLikeData.PARAM(changed.data))
+            save.invoke(SaveLikeData.PARAM(changed.data.copy(isLike = changed.isLike)))
         }
         saveStateHandle[Router.KEY_IS_LIKE] = changed.isLike
     }
+
     data class Action(
         val data: SearchResult,
         val isLike: Boolean,

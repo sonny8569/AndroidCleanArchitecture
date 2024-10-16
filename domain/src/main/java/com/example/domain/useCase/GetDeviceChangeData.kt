@@ -35,8 +35,9 @@ class GetDeviceChangeData @Inject constructor(private val deviceDataSource: Devi
         val changedIndexes = mutableListOf<Pair<Int, Boolean>>()
 
         data.forEachIndexed { index, item ->
-            if(item.isLike && deviceData[item.id] == null){
-                changedIndexes.add(Pair(index, !item.isLike))
+            val deviceItem = deviceData[item.id]
+            if (deviceItem != null && item.isLike != deviceItem.isLike) {
+                changedIndexes.add(Pair(index, deviceItem.isLike))
             }
         }
         return changedIndexes
