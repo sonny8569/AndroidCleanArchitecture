@@ -26,7 +26,7 @@ class SharedPreference @Inject constructor(@ApplicationContext private val conte
         }
     }
 
-    override fun getData(): String? {
-        return preference.getString("dataAll", "")
+    override fun getData(key: String): String? {
+        return preference.getString(key, "")
     }
 }
