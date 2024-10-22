@@ -14,8 +14,7 @@ class DeviceController @Inject constructor(private val device: SharedDataSource)
         return device.deleteData(key, data)
     }
 
-    override suspend fun getData(): String? {
-        val data = mutableListOf<Pair<Int , Boolean>>()
-        return device.getData()
+    override suspend fun getData(key : String): String? {
+        return device.getData(key)
     }
 }

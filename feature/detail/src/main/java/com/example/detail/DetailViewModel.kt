@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Router
 import com.example.domain.model.SearchResult
 import com.example.domain.useCase.SaveLikeData
-import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -39,7 +38,7 @@ class DetailViewModel @Inject constructor(
         val changed = currentData.copy(isLike = !currentData.isLike)
         _liveData.value = changed
         viewModelScope.launch {
-            save.invoke(SaveLikeData.PARAM(changed.data.copy(isLike = changed.isLike)))
+            save.invoke(SaveLikeData.Param(changed.data.copy(isLike = changed.isLike)))
         }
         saveStateHandle[Router.KEY_IS_LIKE] = changed.isLike
     }

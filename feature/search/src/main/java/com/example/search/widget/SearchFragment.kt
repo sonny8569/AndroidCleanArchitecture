@@ -1,7 +1,6 @@
 package com.example.search.widget
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,13 +59,11 @@ class SearchFragment : Fragment() {
     private fun init() {
         binding.list.layoutManager = LinearLayoutManager(context)
         binding.list.addItemDecoration(SearchFeedItemDecoration())
-        adapter.addLoadStateListener {
-            if(it.refresh is LoadState.Error){
-                Log.d("test", it.hasError.toString())
+
+        adapter.addLoadStateListener { loadState ->
+            if(loadState.refresh is LoadState.Error || loadState.append is LoadState.Error){
+                showErrorView(loadState.refresh is LoadState.Error)
             }
-            showProgress(it.refresh is LoadState.Loading)
-            showErrorView(it.refresh is LoadState.Error)
-            showEmptyView(it.append.endOfPaginationReached && adapter.itemCount == 0)
         }
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             SearchListPagingStateAdapter{ clickRetry() },
@@ -165,7 +162,7 @@ class SearchFragment : Fragment() {
     private fun List<Pair<Int, Boolean>>.toChangeData() {
         val data = adapter.snapshot()
         this.forEach { (index, isLike) ->
-            (data[index] as? SearchResult)?.isLike = isLike
+            (data[index])?.isLike = isLike
             adapter.notifyItemChanged(index)
         }
     }
@@ -181,10 +178,6 @@ class SearchFragment : Fragment() {
     private fun showErrorView(isVisible: Boolean) {
         binding.btnReSearch.isVisible = isVisible
         showToastMessage(requireContext().getText(R.string.msg_load_data_error))
-    }
-
-    private fun showProgress(isVisible: Boolean) {
-        binding.progress.isVisible = isVisible
     }
 
     private fun showEmptyView(isVisible: Boolean) {

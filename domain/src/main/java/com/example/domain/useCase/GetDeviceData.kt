@@ -1,12 +1,13 @@
 package com.example.domain.useCase
 
 import com.example.data.dataSoruce.DeviceDataSource
+import com.example.data.repository.LikeRepository
 import com.example.domain.UseCase
 import com.example.domain.model.SearchResult
 import com.example.domain.utill.DocumentConverter
 import javax.inject.Inject
 
-class GetDeviceData @Inject constructor(private val deviceDataSource: DeviceDataSource) :
+class GetDeviceData @Inject constructor(private val likeRepository: LikeRepository) :
     UseCase<GetDeviceData.PARMA, GetDeviceData.Result> {
     sealed interface Result : UseCase.Result {
         data class Success(val data: List<SearchResult>) : Result
@@ -16,7 +17,7 @@ class GetDeviceData @Inject constructor(private val deviceDataSource: DeviceData
     data class PARMA(val currentData: List<SearchResult>) : UseCase.Param
 
     override suspend fun invoke(param: PARMA): Result {
-        val deviceStr = deviceDataSource.getData()
+        val deviceStr = likeRepository.requestLikeInfo()
         if (deviceStr == null || deviceStr == "") {
             return Result.Fail("No data")
         }

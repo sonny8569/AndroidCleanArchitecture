@@ -42,7 +42,7 @@ class LikeViewModel @Inject constructor(
         val currentValue = _currentData.value?.likeData ?: emptyList()
         viewModelScope.launch {
             _currentData.value = LikeData(currentValue.filter { it.id != item.id })
-            when (val result = save.invoke(SaveLikeData.PARAM(item))) {
+            when (val result = save.invoke(SaveLikeData.Param(item))) {
                 is SaveLikeData.Result.Success -> {
                     _liveData.postValue(Action.SaveResult(result.item))
                 }
