@@ -61,14 +61,14 @@ class SearchFragment : Fragment() {
         binding.list.addItemDecoration(SearchFeedItemDecoration())
         adapter.addLoadStateListener {
             showProgress(it.refresh is LoadState.Loading)
-            if(it.source.refresh is LoadState.Error){
+            if (it.source.refresh is LoadState.Error) {
                 showErrorView(true)
             }
             showEmptyView(it.append.endOfPaginationReached && adapter.itemCount == 0)
         }
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
-            SearchListPagingStateAdapter{ clickRetry() },
-            SearchListPagingStateAdapter{clickRetry()}
+            SearchListPagingStateAdapter { clickRetry() },
+            SearchListPagingStateAdapter { clickRetry() }
         )
         binding.btnReSearch.setOnClickListener { clickRetry() }
         binding.list.adapter = adapter
@@ -168,6 +168,11 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun showProgress(boolean : Boolean){
+        if(boolean){
+            binding.progress.visibility = View.VISIBLE
+        }
+    }
     private fun showToastMessage(message: CharSequence) {
         Toast.makeText(
             requireContext(),
