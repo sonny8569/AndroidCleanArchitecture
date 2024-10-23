@@ -61,11 +61,10 @@ class SearchFragment : Fragment() {
         binding.list.layoutManager = LinearLayoutManager(context)
         binding.list.addItemDecoration(SearchFeedItemDecoration())
         adapter.addLoadStateListener {
-            if(it.refresh is LoadState.Error){
-                Log.d("test", it.hasError.toString())
-            }
             showProgress(it.refresh is LoadState.Loading)
-            showErrorView(it.refresh is LoadState.Error)
+            if(it.source.refresh is LoadState.Error){
+                showErrorView(true)
+            }
             showEmptyView(it.append.endOfPaginationReached && adapter.itemCount == 0)
         }
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
