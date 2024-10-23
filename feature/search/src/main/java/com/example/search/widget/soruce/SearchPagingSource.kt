@@ -32,7 +32,7 @@ internal class SearchPagingSource(
         return try {
             val param = params.key ?: Param()
             val response = search.invoke(
-                SearchApi.PARAM(
+                SearchApi.Param(
                     query,
                     param.page,
                     param.isImageEnd,
@@ -49,7 +49,7 @@ internal class SearchPagingSource(
 
                 is SearchApi.Result.Fail ->{
                     Log.e("SearchPagingSource", "SearchApi.Result.Fail: No Response")
-                    LoadResult.Error(Exception("No Response"))
+                    LoadResult.Error(Exception("Load Error"))
                 }
             }
         } catch (e: Exception) {

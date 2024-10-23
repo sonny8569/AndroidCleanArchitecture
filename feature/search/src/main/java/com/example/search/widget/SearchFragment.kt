@@ -1,7 +1,6 @@
 package com.example.search.widget
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -164,7 +163,7 @@ class SearchFragment : Fragment() {
     private fun List<Pair<Int, Boolean>>.toChangeData() {
         val data = adapter.snapshot()
         this.forEach { (index, isLike) ->
-            (data[index] as? SearchResult)?.isLike = isLike
+            (data[index])?.isLike = isLike
             adapter.notifyItemChanged(index)
         }
     }
@@ -180,10 +179,6 @@ class SearchFragment : Fragment() {
     private fun showErrorView(isVisible: Boolean) {
         binding.btnReSearch.isVisible = isVisible
         showToastMessage(requireContext().getText(R.string.msg_load_data_error))
-    }
-
-    private fun showProgress(isVisible: Boolean) {
-        binding.progress.isVisible = isVisible
     }
 
     private fun showEmptyView(isVisible: Boolean) {

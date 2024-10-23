@@ -1,23 +1,20 @@
 package com.example.domain.useCase
 
-import android.util.Log
 import com.example.data.dataSoruce.DeviceDataSource
-import com.example.data.dataSoruce.NetworkDataSource
 import com.example.data.model.SearchDocument
+import com.example.data.repository.LikeRepository
+import com.example.data.repository.SearchRepository
 import com.example.domain.UseCase
 import com.example.domain.model.SearchResult
 import com.example.domain.utill.DocumentConverter
 import javax.inject.Inject
 
 class SearchApi @Inject constructor(
-    private val networkDataSource: NetworkDataSource,
-    private val deviceDataSource: DeviceDataSource,
-) :
-    UseCase<SearchApi.PARAM, SearchApi.Result> {
-    private val sort = "recency"
-    private val pageSize = 10
+    private val searchRepository: SearchRepository,
+    private val likeRepository: LikeRepository,
+) : UseCase<SearchApi.Param, SearchApi.Result> {
 
-    data class PARAM(
+    data class Param(
         val query: String,
         val page: Int,
         var isImageEnd: Boolean = false,
@@ -29,12 +26,12 @@ class SearchApi @Inject constructor(
         data class Fail(val message: String) : Result
     }
 
-    override suspend fun invoke(param: PARAM): Result {
-        if(param.query.isEmpty()){
+    override suspend fun invoke(param: Param): Result {
+        if (param.query.isEmpty()) {
             return Result.Fail("query is empty")
         }
-        if(param.isImageEnd && param.isVideoEnd){
-            return Result.Success(java.util.ArrayList(emptyList()) , true , true)
+        if (param.isImageEnd && param.isVideoEnd) {
+            return Result.Success(java.util.ArrayList(emptyList()),isImageEnd = param.isImageEnd,isVideoEnd = param.isVideoEnd)
         }
         val (imageData, isImageEnd) = try {
             loadImage(param.query, param.page)
@@ -50,13 +47,13 @@ class SearchApi @Inject constructor(
         if (feeds.isEmpty() && isImageEnd && isVideoEnd) {
             return Result.Fail("Load Error")
         }
-        val likeDataStr = deviceDataSource.getData()
+        val likeDataStr = likeRepository.requestLikeInfo()
         if (likeDataStr == null || likeDataStr == "") {
-            return Result.Success(java.util.ArrayList(feeds) , isImageEnd , isVideoEnd)
+            return Result.Success(java.util.ArrayList(feeds), isImageEnd, isVideoEnd)
         }
         val likeData = DocumentConverter.fromJson(likeDataStr)
         val result = makeLikeData(feeds, likeData)
-        return Result.Success(java.util.ArrayList(result), isImageEnd , isVideoEnd)
+        return Result.Success(java.util.ArrayList(result), isImageEnd, isVideoEnd)
     }
 
     private suspend fun loadImage(
@@ -64,7 +61,7 @@ class SearchApi @Inject constructor(
         page: Int,
     ): Pair<List<SearchResult>, Boolean> {
         return try {
-            val (response, isEnd) = networkDataSource.image(query, page, pageSize, sort)
+            val (response, isEnd) = searchRepository.requestSearchImage(query, page)
             val documents = response.map { it.toSearchResult() }
             Pair(documents, isEnd)
         } catch (e: Exception) {
@@ -77,7 +74,7 @@ class SearchApi @Inject constructor(
         page: Int,
     ): Pair<List<SearchResult>, Boolean> {
         return try {
-            val (response, isEnd) = networkDataSource.video(query, page, pageSize, sort)
+            val (response, isEnd) = searchRepository.requestSearchVideo(query, page)
             val documents = response.map { it.toSearchResult() }
             Pair(documents, isEnd)
         } catch (e: Exception) {

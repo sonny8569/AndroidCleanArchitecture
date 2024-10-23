@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 class NetworkDataSourceModule {
     @Provides
-    fun provideNetWorkDataSource(
+    fun provideNetworkDataSource(
         searchApi: SearchApi,
     ): NetworkDataSource {
         return NetworkController(searchApi)

@@ -47,7 +47,7 @@ class SearchViewModel @Inject constructor(
 
     fun onChangeLike(item: SearchResult) {
         viewModelScope.launch {
-            when (val result = save.invoke(SaveLikeData.PARAM(item))) {
+            when (val result = save.invoke(SaveLikeData.Param(item))) {
                 is SaveLikeData.Result.Success -> {
                     _liveData.postValue(Action.SaveResult(result.item))
                 }
@@ -68,7 +68,7 @@ class SearchViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            when(val result = getData.invoke(GetDeviceChangeData.PARAM(list))){
+            when(val result = getData.invoke(GetDeviceChangeData.Param(list))){
                 is GetDeviceChangeData.Result.Success ->{
                     _liveData.postValue(Action.GetDeviceData(result.changeData))
                 }
