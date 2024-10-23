@@ -169,9 +169,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showProgress(boolean : Boolean){
-        if(boolean){
-            binding.progress.visibility = View.VISIBLE
-        }
+        binding.progress.isVisible = boolean
     }
     private fun showToastMessage(message: CharSequence) {
         Toast.makeText(

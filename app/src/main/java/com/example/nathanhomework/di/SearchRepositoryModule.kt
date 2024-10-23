@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SearchRepositoryModule {
+class SearchRepositoryModule {
 
     @Provides
     fun provideSearchRepository(networkDataSource: NetworkDataSource): SearchRepository {
