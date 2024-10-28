@@ -6,5 +6,5 @@ const val Delete_Data_Error = "Error to delete data"
 const val Type_Image = "image"
 const val Type_video = "video"
 const val KEY_SEARCH_QUERY = "KEY_SEARCH_QUERY"
-const val PAGE_SIZE = 10
+const val PAGE_SIZE = 20
 const val Save_Data_Null = "save Data is Null"

@@ -1,6 +1,5 @@
 package com.example.search.widget.soruce
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.domain.model.SearchResult
@@ -48,12 +47,10 @@ internal class SearchPagingSource(
                 )
 
                 is SearchApi.Result.Fail ->{
-                    Log.e("SearchPagingSource", "SearchApi.Result.Fail: No Response")
                     LoadResult.Error(Exception("Load Error"))
                 }
             }
         } catch (e: Exception) {
-            Log.e("SearchPagingSource", "Exception :$e")
             LoadResult.Error(e)
         }
     }
